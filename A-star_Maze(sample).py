@@ -1,5 +1,6 @@
 import pygame
 import sys
+import A_star
 from time import sleep
 
 white = (255, 255, 255)

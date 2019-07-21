@@ -40,7 +40,7 @@ class MAZE:
         self.fps = pygame.time.Clock()  # fps setup
 
         self.player_x = 70  # pixcel x
-        self.player_y = 20  # pixecl y
+        self.player_y = 20  # pixcel y
 
         self.x = start_point[1]  # real x
         self.y = start_point[0]  # real y

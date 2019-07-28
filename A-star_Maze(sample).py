@@ -34,6 +34,12 @@ make_maze = [[1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 class MAZE:
     def __init__(self):
         pygame.init()
+        #이 밑에있는 값들은 무지개 호출할려고 만든것
+        self.r=254
+        self.g=0
+        self.b=0
+        self.rp=self.gp=self.bp=0
+        self.rp=1
 
         self.display = pygame.display.set_mode(size)  # display setup
         pygame.display.set_caption('maze')  # caption setup
@@ -53,6 +59,63 @@ class MAZE:
 
         self.maze()
 
+    # 이 밑에있는 함수 두개는 무지개 호출할려고 만든것
+    def init_color(self):
+        self.r = 254
+        self.g = 0
+        self.b = 0
+        self.rp = self.gp = self.bp = 0
+        self.rp = 1
+    def charColor(self):
+        speed = 15
+        self.char()
+        self.r += self.rp
+        self.g += self.gp
+        self.b += self.bp
+        if self.r == 255 and self.g == 0 and self.b == 0:
+            self.rp = 0
+            self.gp = speed
+            self.bp = 0
+        if self.r == 255 and self.g == 255 and self.b == 0:
+            self.rp = -speed
+            self.gp = 0
+            self.bp = 0
+        if self.r == 0 and self.g == 255 and self.b == 0:
+            self.rp = 0
+            self.gp = 0
+            self.bp = speed
+        if self.r == 0 and self.g == 255 and self.b == 255:
+            self.rp = 0
+            self.gp = -speed
+            self.bp = 0
+        if self.r == 0 and self.g == 0 and self.b == 255:
+            self.rp = speed
+            self.gp = 0
+            self.bp = 0
+        if self.r == 255 and self.g == 0 and self.b == 255:
+            self.rp = 0
+            self.gp = 0
+            self.bp = -speed
+
+    def a_Star(self):
+        speed=0.2
+        tempCnt=self.cnt
+        self.cnt=0
+        for i in range(0,answer):
+            self.display.fill(black)
+            self.init_color()
+            for j in range(0, i):
+                self.charColor()
+                pygame.draw.rect(self.display, (self.r, self.g, self.b),(answer_path[j][1] * box_size, answer_path[j][0] * box_size, box_size, box_size))
+            self.maze()
+            self.charColor()
+            self.cnt+=1
+            self.show()
+            pygame.draw.rect(self.display, (self.r,self.g,self.b), (answer_path[i][1] * box_size, answer_path[i][0] * box_size, box_size, box_size))
+            pygame.display.flip()
+            sleep(speed)
+        self.init_color()
+        self.cnt=tempCnt
     def maze(self):# draw maze
         mx = 0
         my = 0
@@ -74,8 +137,7 @@ class MAZE:
 
     def move(self): # check the key press and move
         key = pygame.key.get_pressed()
-        speed = 0.3
-
+        speed = 0.15
         if key[pygame.K_RIGHT]:  # move right
             if make_maze[self.y][self.x + 1] == 1:
                 pass
@@ -197,7 +259,9 @@ class MAZE:
                     if mx == maze_x:
                         mx = 0
                         my += 1
-
+            keys=pygame.key.get_pressed()
+            if keys[pygame.K_g]:
+                self.a_Star()
             pygame.display.flip()
 
 if __name__ == "__main__":  # start main

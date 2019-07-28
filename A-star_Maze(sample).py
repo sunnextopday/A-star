@@ -19,6 +19,7 @@ end_point = (9, 15)  # end y,x
 maze_x = 17  # max maze x
 maze_y = 11  # max maze y
 
+
 make_maze = [[1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
              [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1],
              [1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1],
@@ -51,6 +52,12 @@ class MAZE:
         self.cnt = 0 # move count check
         self.path=[start_point,] # add move path
 
+        self.xx=0
+        self.yy=0
+        self.n=0
+        self.i=0
+
+
         self.maze()
 
     def maze(self):# draw maze
@@ -75,6 +82,22 @@ class MAZE:
     def move(self): # check the key press and move
         key = pygame.key.get_pressed()
         speed = 0.3
+
+        self.n+=1
+        if self.n%10==0:
+            self.xx, self.yy = answer_path[self.i]
+            make_maze[self.xx][self.yy] = 2
+            self.cnt+=1
+            self.i+=1
+            print(str(self.xx)+','+str(self.yy))
+            if self.i==len(answer_path)-1:
+                sys.exit()
+
+
+
+
+
+
 
         if key[pygame.K_RIGHT]:  # move right
             if make_maze[self.y][self.x + 1] == 1:
@@ -185,6 +208,7 @@ class MAZE:
                     print("\n최적의 경로 값은 아닙니다...")
                 sys.exit()
 
+            '''
             if (self.x == start_point[1] and self.y == start_point[0]) and self.cnt > 0:  # draw last move point
                 self.cnt = 0
                 mx = 0
@@ -196,7 +220,7 @@ class MAZE:
                     mx += 1
                     if mx == maze_x:
                         mx = 0
-                        my += 1
+                        my += 1'''
 
             pygame.display.flip()
 

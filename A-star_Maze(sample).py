@@ -41,13 +41,15 @@ class MAZE:
         self.fps = pygame.time.Clock()  # fps setup
 
         self.player_x = 70  # pixcel x
-        self.player_y = 20  # pixcel y
+        self.player_y = 20  # pixecl y
 
         self.x = start_point[1]  # real x
         self.y = start_point[0]  # real y
 
         self.font = pygame.font.SysFont("Arial", 40)  # font setup
+
         self.cnt = 0 # move count check
+        self.path=[start_point,] # add move path
 
         self.maze()
 
@@ -90,6 +92,7 @@ class MAZE:
                 self.player_x += box_size
                 self.x += 1
                 self.cnt += 1
+                self.path.append((self.y,self.x))
                 sleep(speed)
 
         elif key[pygame.K_LEFT]:  # move left
@@ -108,6 +111,7 @@ class MAZE:
                 self.player_x -= box_size
                 self.x -= 1
                 self.cnt += 1
+                self.path.append((self.y, self.x))
                 sleep(speed)
 
         elif key[pygame.K_UP]:  # move up
@@ -126,6 +130,7 @@ class MAZE:
                 self.player_y -= box_size
                 self.y -= 1
                 self.cnt += 1
+                self.path.append((self.y, self.x))
                 sleep(speed)
 
         elif key[pygame.K_DOWN]:  # move down
@@ -144,6 +149,7 @@ class MAZE:
                 self.player_y += box_size
                 self.y += 1
                 self.cnt += 1
+                self.path.append((self.y, self.x))
                 sleep(speed)
 
     def show(self): # display Move count string
@@ -170,7 +176,13 @@ class MAZE:
 
             if self.x == end_point[1] and self.y == end_point[0]:
                 print("도착!")
-                print("도착지까지의 비용은 : " + str(self.cnt))
+                print("도착지까지의 들은 비용은 : " + str(self.cnt))
+                if self.cnt == answer:
+                    print("\n최적의 경로 값입니다!")
+                    print("A * 알고리즘이 찾은 경로는 : "+str(answer_path))
+                    print("플레이어가 찾은 경로는 : "+str(self.path))
+                else:
+                    print("\n최적의 경로 값은 아닙니다...")
                 sys.exit()
 
             if (self.x == start_point[1] and self.y == start_point[0]) and self.cnt > 0:  # draw last move point
@@ -189,4 +201,8 @@ class MAZE:
             pygame.display.flip()
 
 if __name__ == "__main__":  # start main
+    global answer_path , answer
+
+    answer_path = A_star.main(make_maze,start_point,end_point) # a star 알고리즘 경로
+    answer = len(A_star.main(make_maze,start_point,end_point)) -1 # a star 알고리즘 경로 길이 값
     MAZE().run()

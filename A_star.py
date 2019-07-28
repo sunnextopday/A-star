@@ -42,15 +42,15 @@ def astar(maze, start, end):
             return path[::-1]  # 역순으로 출력되게 반전 상태로 리턴 시킨다
 
         children = []
-        for new_position in [(0, -1), (0, 1), (-1, 0), (1, 0), (-1, -1), (-1, 1), (1, -1),
-                             (1, 1)]:  # 동서남북 그리고 대각선 방향으로 한칸씩 이동
+        for new_position in [(0, -1), (0, 1), (-1, 0), (1, 0)]:  # 동서남북 그리고 대각선 방향으로 한칸씩 이동
+
             node_position = (current_node.position[0] + new_position[0], current_node.position[1] + new_position[1])
 
             if node_position[0] > (len(maze) - 1) or node_position[0] < 0 \
                     or node_position[1] > (len(maze[len(maze) - 1]) - 1) or node_position[1] < 0:  # 이동될 지점이 maze 바깥일때
                 continue
 
-            if maze[node_position[0]][node_position[1]] != 0:  # 이동될 지점이 벽일때
+            if maze[node_position[0]][node_position[1]] == 1:  # 이동될 지점이 벽일때
                 continue
 
             new_node = Node(current_node, node_position)
@@ -65,8 +65,8 @@ def astar(maze, start, end):
 
             if check == False:
                 child.g = current_node.g + 1
-                child.h = ((child.position[0] - end_node.position[0]) ** 2) + (
-                            (child.position[1] - end_node.position[1]) ** 2)  # 수평방향은 10, 대각선은 12
+                child.h = ((child.position[0] - end_node.position[1]) ** 2) + (
+                            (child.position[1] - end_node.position[0]) ** 2)  # 수평방향은 10, 대각선은 12
                 child.f = child.g + child.h
 
                 for open_node in open_list:
@@ -75,29 +75,8 @@ def astar(maze, start, end):
 
                 open_list.append(child)
 
-def main():
-    # 미로 생성
-    maze = [[0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
-
-    start = (0, 0)  # 시작 좌표
-    end = (0, 5)  # 도착 좌표
-
-    if maze[end[0]][end[1]] == 1:  # 도착지가 벽일 경우
-        print("도착지는 벽으로 구성되어 있습니다")
-        return
-
+def main(maze,start,end):
     path = astar(maze, start, end)  # a star 탐색 결과
-    print("도착지까지의 최소 경로는 : ", path)  # 경로 출력
-    print("경로에 드는 비용은 : ", len(path))  # 최소 비용 출력
-
-if __name__ == '__main__':
-    main()
+    return path
+    #print("도착지까지의 최소 경로는 : ", path)  # 경로 출력
+    #print("경로에 드는 비용은 : ", len(path))  # 최소 비용 출력

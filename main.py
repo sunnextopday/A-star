@@ -39,14 +39,14 @@ def get_maze_method(option):  # 선택 값에 따른 알고리즘으로 미로 �
 
 
 def main(maze_method, speed=0.010, mode=0):
-    check =0
+    check = 0 # Maze 탐색 완료 유무를 가려주는 체크 값
     screen = pygame.display.set_mode(resolution)
     pygame.display.set_caption("A_star_Maze")
-    pygame.display.set_icon(pygame.image.load("C:/Users/UNKNOWN/Documents/GitHub/Pygame/img/maze.png"))
+    pygame.display.set_icon(pygame.image.load("프로젝트 경로/maze.png"))
     clock = pygame.time.Clock()
     maze, cell_list = maze_method()  # 랜덤으로 생성된 2차원 리스트 미로와 xxx 좌표가 담긴 리스트를 받는다
 
-    path = A_star.main(maze,start_point,end_point)
+    path = A_star.main(maze,start_point,end_point) # A_star 소스로 만들어진 Maze 탐색 및 경로 받기
     index = 0
     maze_finished = False
 
@@ -67,9 +67,9 @@ def main(maze_method, speed=0.010, mode=0):
             path = A_star.main(maze, start_point, end_point)
             maze_finished = False
             check=0
-        elif press_key[pygame.K_d]:
+        elif press_key[pygame.K_d]:#D 키가 눌렸을 때 DFS로 재생성
             main(maze_method=get_maze_method(DFS), mode=1)
-        elif press_key[pygame.K_k]:
+        elif press_key[pygame.K_k]:#K 키가 눌렸을 때 DFS로 재생성
             main(maze_method=get_maze_method(Kruskal), mode=1)
 
         # print index
@@ -94,7 +94,7 @@ def main(maze_method, speed=0.010, mode=0):
                 for i in range(len(path)):
                     grid_view.fill_a_cell_with_circle(path[i][1], path[i][0], path_color)
                     pygame.display.update()
-                    sleep(0.1)
+                    sleep(0.1) #0.1초씩 끊어서 탐색 경로 표시
                 maze_finished=False
                 check=1
 
@@ -104,11 +104,11 @@ def main(maze_method, speed=0.010, mode=0):
         if pass_time >= speed:
             pass_time = 0
 
-            if index >= len(cell_list) - 1 and check==0:
-                    maze_finished = True
+            if index >= len(cell_list) - 1 and check==0: # Maze가 화면에 다 그려졌을 때
+                    maze_finished = True # 탐색을 시작하게 끔 유도
                     print("랜덤으로 생성된 미로 탐색 비용은 : "+str(len(path)))
 
-            if index + 1 < len(cell_list):
+            if index + 1 < len(cell_list): # 덜 된경우 계속해서 작업을 이룬다
                 index += 1
                 pygame.display.update()
 

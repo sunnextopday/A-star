@@ -69,7 +69,6 @@ def main(maze_method, speed=0.010, mode=0):
             check=0
         elif press_key[pygame.K_d]:
             main(maze_method=get_maze_method(DFS), mode=1)
-            pass
         elif press_key[pygame.K_k]:
             main(maze_method=get_maze_method(Kruskal), mode=1)
 
